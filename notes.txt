@@ -1,0 +1,39 @@
+====
+aspect-oriented programming
+1. correct
+2. efficient
+3. debug
+
+====
+
+for x in items:
+    print x
+
+in python means:
+it = iter(items)
+try:
+    while True:
+        x = next(it)
+        print x
+except StopIteration:
+    pass
+
+====
+
+concepts inventory
+refine ideas
+simple implementation
+back of the envelope (to say how long is it going to take to run this simple implementation)
+refine code
+
+====
+
+eval() takes most of the time (47 out of 75 seconds)
+because it is a builtin function, we cannot change it. We must make fewer or easier calls: We can break the calls to maybe eval('ODD + ODD') and eval('EVEN') and do them separately.
+But if we cannot think of a way to make the calls easier, we have to make fewer calls.
+
+====
+
+Grammar is a description, has a finite length and should be easy to write.
+Language is a set of all possible strings that grammar describes.
+
