@@ -37,3 +37,5 @@ But if we cannot think of a way to make the calls easier, we have to make fewer 
 Grammar is a description, has a finite length and should be easy to write.
 Language is a set of all possible strings that grammar describes.
 
+## "454 matches in distinct folder have been found in 1492.88 seconds (24.88 minutes)!."
+## "161 matches in distinct folder have been found in 736.34 seconds (12.27 minutes)!."

@@ -6,9 +6,9 @@ import re
 import cv2
 from skimage import metrics
 
-folder1 = 'D:\MICRO_ALGAE_DATASET\\algebra.v23i.yolov8'
-folder2 = 'D:\MICRO_ALGAE_DATASET\\final_dataset\dataset\distinct\images'
-folder3 = 'D:\MICRO_ALGAE_DATASET\\final_dataset\dataset\clusters\images'
+orig_dir = 'D:\MICRO_ALGAE_DATASET\\algebra.v23i.yolov8'
+distinct_dir = 'D:\MICRO_ALGAE_DATASET\\final_dataset\dataset\distinct\images'
+clusters_dir = 'D:\MICRO_ALGAE_DATASET\\final_dataset\dataset\clusters\images'
 similar_imgs = {}
 
 def perceptual_hash(image_path, resize=False):
@@ -28,7 +28,7 @@ def rename_images(folder):
             os.rename(pre, post)
             #m = re.match(r"_[0-9.a-z]+?\.(\w+)\.[0-9a-z]+", file)
 
-
+## Underestimates
 def find_matching_images(folder1, folder2):
     folder1_hashes = {}
     folder2_hashes = {}
@@ -55,7 +55,8 @@ def find_matching_images(folder1, folder2):
 def ssim(image1, image2):
     image1 = cv2.imread(image1)
     image2 = cv2.imread(image2)
-    image2 = cv2.resize(image2, (image1.shape[1], image1.shape[0]), interpolation = cv2.INTER_AREA)
+    #image2 = cv2.resize(image2, (image1.shape[1], image1.shape[0]), interpolation = cv2.INTER_AREA)
+    image1 = cv2.resize(image1, (image2.shape[1], image2.shape[0]), interpolation = cv2.INTER_AREA)
     #print(image1.shape, image2.shape)
     
     # Convert images to grayscale
@@ -68,6 +69,7 @@ def ssim(image1, image2):
     return round(ssim_score[0], 2)
 
 
+## Slow
 def find_matching_images_2(folder1, folder2):
     folder1_images = []
     folder2_images = []
@@ -86,18 +88,38 @@ def find_matching_images_2(folder1, folder2):
     return matches
 
 
+## Οverestimates
+def find_matching_images_3(folder1, folder2):
+    hashes1 = {}
+    hashes2 = {}
+    cutoff = 5
+
+    for root, _, files in os.walk(folder1):
+        for file in files:
+            file_path = os.path.join(root, file)
+            hashes1[file_path] = imagehash.average_hash(Image.open(file_path))
+
+    for root, _, files in os.walk(folder2):
+        for file in files:
+            file_path = os.path.join(root, file)
+            hashes2[file_path] = imagehash.average_hash(Image.open(file_path))
+
+    matches = [(image1, image2) for (image1, hash1) in hashes1.items() for (image2, hash2) in hashes2.items() if (hash1 - hash2) < 5]
+    return matches
+
+
 ## USING THE PHASH METHOD
 ## 1. distinct images
-matches = find_matching_images(folder1, folder2)
+matches = find_matching_images_2(orig_dir, distinct_dir)
 # for match in matches:
 #     print(f'Match found: {match[0]} and {match[1]}')
 print(f'{len(matches)} matches in distinct folder have been found.')
 
 ## 2. clusters images
-matches = find_matching_images(folder1, folder3)
-# for match in matches:
-#     print(f'Match found: {match[0]} and {match[1]}')
-print(f'{len(matches)} matches in clusters folder have been found.')
+# matches = find_matching_images(orig_dir, clusters_dir)
+# # for match in matches:
+# #     print(f'Match found: {match[0]} and {match[1]}')
+# print(f'{len(matches)} matches in clusters folder have been found.')
 
 
 
@@ -107,8 +129,11 @@ print(f'{len(matches)} matches in clusters folder have been found.')
 
 
 # img1 = 'D:\\MICRO_ALGAE_DATASET\\algebra.v23i.yolov8\\zn-1ppm-40x-8_jpg.rf.78c4b54ce612e3174122369d9a97375f.png' 
-# img2 = 'D:\\MICRO_ALGAE_DATASET\\final_dataset\\dataset\\clusters\\images\\625.png'
+# img2 = 'D:\\MICRO_ALGAE_DATASET\\final_dataset\\dataset\\clusters\\images\\628.png'
 # print(ssim(img1, img2))
+# hash0 = imagehash.average_hash(Image.open(img1)) 
+# hash1 = imagehash.average_hash(Image.open(img2)) 
+# cutoff = 5  # maximum bits that could be different between the hashes. 
 
 
 ## USING THE SSIM METHOD
