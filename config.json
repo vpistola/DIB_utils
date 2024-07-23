@@ -1,0 +1,15 @@
+{
+    "orig_dir": "D:/MICRO_ALGAE_DATASET/algebra.v23i.yolov8/",
+    "orig_dir_dest1": "D:/MICRO_ALGAE_DATASET/algebra.v23i.yolov8/clusters/",
+    "orig_dir_dest2": "D:/MICRO_ALGAE_DATASET/algebra.v23i.yolov8/distinct/",
+    "distinct_dir": "D:/MICRO_ALGAE_DATASET/final_dataset/dataset/distinct/images/",
+    "clusters_dir": "D:/MICRO_ALGAE_DATASET/final_dataset/dataset/clusters/images/",
+    "distinct_p": "True",
+    "load_p": "True",
+    "run_hamming": "False",
+    "test_p": "False",
+    "process_data1": "True",
+    "move_data1": "True",
+    "process_data2": "True",
+    "move_data2": "True"
+}
